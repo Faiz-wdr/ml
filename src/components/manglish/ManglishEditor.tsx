@@ -31,7 +31,37 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const suggestionBarRef = useRef<HTMLDivElement>(null)
   const latestWordRef = useRef<string>('')
+
+  // Dismiss and hide suggestions
+  const dismissSuggestions = useCallback(() => {
+    setSuggestions([])
+    setActiveWordRange(null)
+    setSelectedIndex(0)
+    setCaretPosition(null)
+    latestWordRef.current = ''
+  }, [])
+
+  // Hide suggestions when clicking anywhere outside the suggestion box
+  useEffect(() => {
+    if (suggestions.length === 0) return
+
+    const handleGlobalClick = (e: MouseEvent | TouchEvent) => {
+      if (suggestionBarRef.current && suggestionBarRef.current.contains(e.target as Node)) {
+        return
+      }
+      dismissSuggestions()
+    }
+
+    document.addEventListener('mousedown', handleGlobalClick)
+    document.addEventListener('touchstart', handleGlobalClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleGlobalClick)
+      document.removeEventListener('touchstart', handleGlobalClick)
+    }
+  }, [suggestions.length, dismissSuggestions])
 
   // Find the current English/Manglish word being typed before the cursor
   const detectActiveWord = useCallback((content: string, cursorPos: number) => {
@@ -80,25 +110,15 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
           // Keep local suggestions
         })
     } else {
-      setActiveWordRange(null)
-      latestWordRef.current = ''
-      setSuggestions([])
-      setSelectedIndex(0)
-      setCaretPosition(null)
+      dismissSuggestions()
     }
-  }, [])
+  }, [dismissSuggestions])
 
   // Handle textarea content change
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value
     setText(newText)
     detectActiveWord(newText, e.target.selectionStart)
-  }
-
-  // Handle cursor position changes (selection, clicks, arrow navigation)
-  const handleSelect = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const target = e.target as HTMLTextAreaElement
-    detectActiveWord(target.value, target.selectionStart)
   }
 
   // Commit a suggestion replacing the active word
@@ -114,10 +134,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
       const updatedText = before + replacement + after
 
       setText(updatedText)
-      setSuggestions([])
-      setActiveWordRange(null)
-      setSelectedIndex(0)
-      setCaretPosition(null)
+      dismissSuggestions()
 
       // Reposition cursor immediately after committed word
       const newCursorPos = start + replacement.length
@@ -128,7 +145,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
         }
       }, 0)
     },
-    [activeWordRange, text]
+    [activeWordRange, text, dismissSuggestions]
   )
 
   // Keyboard navigation & actions
@@ -170,12 +187,10 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
         return
       }
 
-      // Escape: dismiss suggestions
-      if (e.key === 'Escape') {
+      // Escape, ArrowLeft, or ArrowRight: dismiss suggestions
+      if (e.key === 'Escape' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         e.preventDefault()
-        setSuggestions([])
-        setActiveWordRange(null)
-        setCaretPosition(null)
+        dismissSuggestions()
         return
       }
     }
@@ -196,10 +211,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
   // Clear action
   const handleClear = () => {
     setText('')
-    setSuggestions([])
-    setActiveWordRange(null)
-    setSelectedIndex(0)
-    setCaretPosition(null)
+    dismissSuggestions()
     if (textareaRef.current) {
       textareaRef.current.focus()
     }
@@ -256,7 +268,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
           ref={textareaRef}
           value={text}
           onChange={handleChange}
-          onSelect={handleSelect}
+          onClick={dismissSuggestions}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           aria-label="Manglish Malayalam typing editor"
@@ -277,6 +289,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
         {/* Floating Vertical Suggestion Popup (Positioned directly under caret/word) */}
         {suggestions.length > 0 && activeWordRange && (
           <SuggestionBar
+            ref={suggestionBarRef}
             suggestions={suggestions}
             selectedIndex={selectedIndex}
             position={caretPosition}
