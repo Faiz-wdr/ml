@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* Custom minimal dark scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-pill);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  ::selection {
+    background-color: rgba(169, 48, 187, 0.35);
+    color: #FDFDFD;
+  }
+}
+
+/* Glassmorphism & Reference Visual Utilities */
+.surface-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  backdrop-filter: blur(12px);
+}
+
+.surface-elevated {
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+}
+
+.glow-accent-subtle {
+  box-shadow: 0 0 20px -4px var(--accent-glow);
+}
+
+.glow-accent-pill {
+  box-shadow: 0 0 16px -2px rgba(169, 48, 187, 0.4), inset 0 0 12px -2px rgba(169, 48, 187, 0.15);
+}
+
+.accent-pill-active {
+  background: linear-gradient(135deg, rgba(169, 48, 187, 0.24) 0%, rgba(169, 48, 187, 0.08) 100%);
+  border: 1px solid rgba(169, 48, 187, 0.45);
+  box-shadow: 0 0 20px -3px rgba(169, 48, 187, 0.32);
+}
+
+.accent-indicator-notch {
+  width: 3px;
+  height: 18px;
+  border-radius: 9999px;
+  background-color: var(--accent-primary);
+  box-shadow: 0 0 10px 1px var(--accent-primary);
+}
+
+/* Malayalam Typography optimization */
+.font-malayalam {
+  font-family: var(--font-malayalam), var(--font-sans);
+  line-height: 1.7;
+}

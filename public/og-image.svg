@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Background -->
+  <rect width="1200" height="630" fill="#0C0C0C"/>
+
+  <!-- Radial Glow Accents -->
+  <circle cx="240" cy="315" r="380" fill="#A930BB" fill-opacity="0.18"/>
+  <circle cx="980" cy="460" r="280" fill="#E68BF5" fill-opacity="0.08"/>
+
+  <!-- Subtle Container Border -->
+  <rect x="24" y="24" width="1152" height="582" rx="32" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+
+  <!-- Left: Brand Icon Box (Malayalam "അ") -->
+  <g transform="translate(100, 195)">
+    <rect width="240" height="240" rx="48" fill="#141414" stroke="#A930BB" stroke-opacity="0.4" stroke-width="3"/>
+    <text x="120" y="160" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Malayalam', sans-serif" font-size="124" font-weight="700" fill="#FDFDFD">അ</text>
+  </g>
+
+  <!-- Right: Title & Typography Info -->
+  <g transform="translate(390, 200)">
+    <!-- App Name -->
+    <text x="0" y="60" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="52" font-weight="700" fill="#FDFDFD" letter-spacing="-0.02em">
+      Malayalam Converter
+    </text>
+
+    <!-- Subtitle -->
+    <text x="0" y="115" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="400" fill="#A0A0A0">
+      Unicode • ML-TT • MLKV • FML Font Converter &amp; Manglish Typing
+    </text>
+
+    <!-- Badges -->
+    <g transform="translate(0, 160)">
+      <!-- Badge 1 -->
+      <rect x="0" y="0" width="168" height="42" rx="21" fill="#1C1C1C" stroke="#A930BB" stroke-opacity="0.4"/>
+      <text x="84" y="26" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="500" fill="#E68BF5">100% Client-Side</text>
+
+      <!-- Badge 2 -->
+      <rect x="180" y="0" width="154" height="42" rx="21" fill="#1C1C1C" stroke="#ffffff" stroke-opacity="0.1"/>
+      <text x="257" y="26" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="500" fill="#4ADE80">Zero Telemetry</text>
+
+      <!-- Badge 3 -->
+      <rect x="346" y="0" width="186" height="42" rx="21" fill="#1C1C1C" stroke="#ffffff" stroke-opacity="0.1"/>
+      <text x="439" y="26" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="500" fill="#D1D5DB">Fast Offline PWA</text>
+    </g>
+  </g>
+</svg>

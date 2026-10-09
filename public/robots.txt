@@ -1,0 +1,7 @@
+# robots.txt for Malayalam Converter
+User-agent: *
+Allow: /
+Allow: /font
+Allow: /manglish
+
+Sitemap: /sitemap.xml
