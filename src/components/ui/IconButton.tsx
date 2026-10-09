@@ -40,6 +40,8 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         'bg-transparent text-white/60 hover:text-white hover:bg-white/[0.08] border border-transparent',
       icon:
         'bg-transparent text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent',
+      danger:
+        'bg-red-500/15 text-red-300 border border-red-500/30 hover:bg-red-500/25 hover:border-red-500/50 hover:text-red-200',
     }[variant]
 
     const activeStyles = active

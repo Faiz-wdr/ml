@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Check, Copy, Pencil, Trash2 } from 'lucide-react'
 import type { SavedText } from '../../core/storage/savedTexts'
 import { IconButton } from '../ui/IconButton'
+import { AlertDialog } from '../ui/AlertDialog'
 
 export interface SavedTextCardProps {
   item: SavedText
@@ -16,7 +17,7 @@ export const SavedTextCard: React.FC<SavedTextCardProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -39,11 +40,10 @@ export const SavedTextCard: React.FC<SavedTextCardProps> = ({
 
   return (
     <div
-      className={`group relative flex flex-col justify-between rounded-xl p-3.5 sm:p-4 transition-all duration-200 border ${
-        isEditing
-          ? 'bg-[#151218] border-[#A930BB]/60 shadow-[0_0_20px_rgba(169,48,187,0.15)] ring-1 ring-[#A930BB]/30'
-          : 'bg-[#121212] border-white/[0.08] hover:border-white/[0.14] hover:bg-[#141414]'
-      }`}
+      className={`group relative flex flex-col justify-between rounded-xl p-3.5 sm:p-4 transition-all duration-200 border ${isEditing
+        ? 'bg-[#151218] border-[#A930BB]/60 shadow-[0_0_20px_rgba(169,48,187,0.15)] ring-1 ring-[#A930BB]/30'
+        : 'bg-[#121212] border-white/[0.08] hover:border-white/[0.14] hover:bg-[#141414]'
+        }`}
     >
       {/* Malayalam Text Preview */}
       <div className="font-malayalam text-base sm:text-[17px] text-[#FDFDFD] leading-relaxed whitespace-pre-wrap break-words line-clamp-4">
@@ -79,51 +79,45 @@ export const SavedTextCard: React.FC<SavedTextCardProps> = ({
             className={copied ? 'text-[#E68BF5]' : 'hover:bg-white/[0.06]'}
           />
 
-          {isConfirmingDelete ? (
-            <div className="flex items-center gap-1.5 animate-in fade-in duration-150">
-              <span className="text-[11px] text-red-400 font-mono">Delete?</span>
-              <button
-                type="button"
-                onClick={() => onDelete(item.id)}
-                className="px-2 py-0.5 rounded text-[11px] font-medium bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/30 transition-colors cursor-pointer"
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsConfirmingDelete(false)}
-                className="px-2 py-0.5 rounded text-[11px] text-white/50 hover:text-white transition-colors cursor-pointer"
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <>
-              {/* Edit Icon Button */}
-              <IconButton
-                icon={<Pencil className="h-3.5 w-3.5 text-white/60 hover:text-white" strokeWidth={1.75} />}
-                aria-label="Edit note"
-                tooltip="Edit note"
-                variant="ghost"
-                size="sm"
-                onClick={() => onEdit(item)}
-                className="hover:bg-white/[0.06]"
-              />
+          {/* Edit Icon Button */}
+          <IconButton
+            icon={<Pencil className="h-3.5 w-3.5 text-white/60 hover:text-white" strokeWidth={1.75} />}
+            aria-label="Edit note"
+            tooltip="Edit note"
+            variant="ghost"
+            size="sm"
+            onClick={() => onEdit(item)}
+            className="hover:bg-white/[0.06]"
+          />
 
-              {/* Delete Icon Button */}
-              <IconButton
-                icon={<Trash2 className="h-3.5 w-3.5 text-white/40 hover:text-red-400" strokeWidth={1.75} />}
-                aria-label="Delete note"
-                tooltip="Delete note"
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsConfirmingDelete(true)}
-                className="hover:bg-white/[0.06] hover:text-red-400"
-              />
-            </>
-          )}
+          {/* Delete Icon Button - Triggers Design System Alert Dialog */}
+          <IconButton
+            icon={<Trash2 className="h-3.5 w-3.5 text-white/40 hover:text-red-400" strokeWidth={1.75} />}
+            aria-label="Delete note"
+            tooltip="Delete note"
+            variant="ghost"
+            size="sm"
+            onClick={() => setDeleteDialogOpen(true)}
+            className="hover:bg-white/[0.06] hover:text-red-400"
+          />
         </div>
       </div>
+
+      {/* Design System Alert Dialog Box for Delete Confirmation */}
+      <AlertDialog
+        isOpen={deleteDialogOpen}
+        title="Delete This Saved Note?"
+        description="This action cannot be undone."
+        content={item.text}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="purple"
+        onConfirm={() => {
+          onDelete(item.id)
+          setDeleteDialogOpen(false)
+        }}
+        onCancel={() => setDeleteDialogOpen(false)}
+      />
     </div>
   )
 }

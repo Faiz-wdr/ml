@@ -46,6 +46,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         'bg-transparent text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent',
       icon:
         'bg-[#151515] text-white/80 border border-white/[0.08] hover:bg-[#1C1C1C] hover:text-white p-0',
+      danger:
+        'bg-red-500/15 text-red-300 border border-red-500/30 hover:bg-red-500/25 hover:border-red-500/50 hover:text-red-200 active:bg-red-500/30 shadow-[0_0_12px_rgba(239,68,68,0.2)]',
     }[variant]
 
     const widthStyle = fullWidth ? 'w-full' : ''

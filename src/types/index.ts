@@ -20,7 +20,7 @@ export interface FontFormat {
   badge?: string
 }
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'icon'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'icon' | 'danger'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 export interface TextEditorProps {
