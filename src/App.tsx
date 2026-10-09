@@ -11,7 +11,7 @@ export type CurrentRoute = 'font' | 'manglish' | '404'
 function resolveRouteFromLocation(): CurrentRoute {
   if (typeof window === 'undefined') return 'font'
 
-  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const path = window.location.pathname.replace(/\/+$/, '').toLowerCase() || '/'
   const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase()
 
   if (hash === 'manglish' || path === '/manglish') {
