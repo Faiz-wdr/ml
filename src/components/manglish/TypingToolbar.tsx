@@ -30,16 +30,16 @@ export const TypingToolbar: React.FC<TypingToolbarProps> = ({
   return (
     <div className="flex items-center justify-between gap-2 sm:gap-3 pt-3 border-t border-white/[0.06] text-xs text-white/40 w-full min-w-0">
       {/* Counters & Hints */}
-      <div className="flex items-center gap-1.5 sm:gap-2.5 text-[11px] sm:text-xs text-white/40 shrink-0">
-        <span className="font-mono whitespace-nowrap">
-          {wordCount} {wordCount === 1 ? 'word' : 'words'}
+      <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono text-white/40 select-none shrink-0">
+        <span>
+          {charCount.toLocaleString()} {charCount === 1 ? 'char' : 'chars'}
         </span>
-        <span className="h-2.5 sm:h-3 w-px bg-white/10" />
-        <span className="font-mono whitespace-nowrap">
-          {charCount} {charCount === 1 ? 'char' : 'chars'}
+        <span className="opacity-40">•</span>
+        <span>
+          {wordCount.toLocaleString()} {wordCount === 1 ? 'word' : 'words'}
         </span>
         {isEditing && (
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono text-[#E68BF5] ml-1 whitespace-nowrap">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono text-[#E68BF5] ml-1.5 whitespace-nowrap">
             <span>Editing saved text</span>
           </span>
         )}

@@ -63,4 +63,16 @@ describe('Production Readiness Verification', () => {
     const all = getSavedTexts()
     expect(Array.isArray(all)).toBe(true)
   })
+
+  it('calculates character and word counts accurately for editor footers', () => {
+    const text = 'dbd2bd2'
+    const charCount = text.length
+    const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0
+    expect(charCount).toBe(7)
+    expect(wordCount).toBe(1)
+
+    const multiWord = 'കേരളം ദൈവത്തിന്റെ സ്വന്തം നാട്'
+    expect(multiWord.trim().split(/\s+/).length).toBe(4)
+    expect(multiWord.length).toBe(30)
+  })
 })

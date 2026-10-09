@@ -38,20 +38,22 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         {leftContent}
       </div>
 
-      <div className="flex items-center gap-2">
-        {charCount !== undefined && (
-          <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-white/35 mr-1 select-none">
-            <span>{charCount.toLocaleString()} chars</span>
-            {wordCount !== undefined && (
-              <>
-                <span className="opacity-40">•</span>
-                <span>{wordCount.toLocaleString()} words</span>
-              </>
-            )}
-          </div>
-        )}
-        {rightActions}
-      </div>
+      {(rightActions || charCount !== undefined) && (
+        <div className="flex items-center gap-2">
+          {charCount !== undefined && (
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-white/35 mr-1 select-none">
+              <span>{charCount.toLocaleString()} {charCount === 1 ? 'char' : 'chars'}</span>
+              {wordCount !== undefined && (
+                <>
+                  <span className="opacity-40">•</span>
+                  <span>{wordCount.toLocaleString()} {wordCount === 1 ? 'word' : 'words'}</span>
+                </>
+              )}
+            </div>
+          )}
+          {rightActions}
+        </div>
+      )}
     </div>
   )
 }

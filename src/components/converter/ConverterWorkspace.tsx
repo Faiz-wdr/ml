@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Check, Copy } from 'lucide-react'
 import { TARGET_FONT_FORMATS } from '../../constants/fonts'
 import { convertLegacyToUnicode, convertUnicodeToLegacy } from '../../core'
-import { Button } from '../ui/Button'
 import { Tooltip } from '../ui/Tooltip'
 import { ConversionHeader } from './ConversionHeader'
 import { FontSelector } from './FontSelector'
@@ -31,7 +29,6 @@ export const ConverterWorkspace: React.FC = () => {
     'unicode-to-legacy'
   )
   const [viewMode, setViewModeState] = useState<'stacked' | 'split'>(getSavedViewMode)
-  const [copiedTarget, setCopiedTarget] = useState(false)
 
   const setViewMode = useCallback((mode: 'stacked' | 'split') => {
     setViewModeState(mode)
@@ -74,17 +71,6 @@ export const ConverterWorkspace: React.FC = () => {
     )
   }
 
-  const handleCopyTarget = async () => {
-    if (!targetText) return
-    try {
-      await navigator.clipboard.writeText(targetText)
-      setCopiedTarget(true)
-      setTimeout(() => setCopiedTarget(false), 2000)
-    } catch {
-      // fallback handled in editor
-    }
-  }
-
   const isSplit = viewMode === 'split'
   const isUnicodeSource = direction === 'unicode-to-legacy'
 
@@ -108,6 +94,7 @@ export const ConverterWorkspace: React.FC = () => {
       extraHeaderContent={!isUnicodeSource ? fontSelectorElement : undefined}
       value={sourceText}
       onChange={setSourceText}
+      onClear={() => setSourceText('')}
       placeholder={
         isUnicodeSource
           ? 'Paste or type Malayalam Unicode text...'
@@ -129,33 +116,12 @@ export const ConverterWorkspace: React.FC = () => {
       extraHeaderContent={isUnicodeSource ? fontSelectorElement : undefined}
       value={targetText}
       readOnly={true}
+      onClear={() => setSourceText('')}
       placeholder="Converted text will appear here immediately..."
       fontFamily={isUnicodeSource ? 'mono' : 'malayalam'}
       minHeight={isSplit ? 'min-h-[220px] sm:min-h-[280px] lg:min-h-[380px]' : 'min-h-[140px] sm:min-h-[180px]'}
       showCount={true}
-      showTopCopy={false}
       className={isSplit ? 'h-full' : ''}
-      footerActions={
-        <div className="flex items-center justify-end w-full">
-          {/* Primary Copy Action */}
-          <Button
-            variant="primary"
-            size="sm"
-            leftIcon={
-              copiedTarget ? (
-                <Check className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-              ) : (
-                <Copy className="h-3.5 w-3.5 text-white" strokeWidth={2} />
-              )
-            }
-            onClick={handleCopyTarget}
-            disabled={!targetText}
-            className="px-3"
-          >
-            {copiedTarget ? 'Copied' : 'Copy'}
-          </Button>
-        </div>
-      }
     />
   )
 

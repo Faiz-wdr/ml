@@ -33,6 +33,9 @@ export interface TextEditorProps {
   readOnly?: boolean
   minHeight?: string
   showCount?: boolean
+  showClear?: boolean
+  showCopy?: boolean
+  showBottomBar?: boolean
   onClear?: () => void
   onCopy?: () => void
   extraHeaderContent?: ReactNode
