@@ -39,6 +39,11 @@ describe('Production Readiness Verification', () => {
     expect(SEO_CONFIGS['404'].title).toContain('Page Not Found')
   })
 
+  it('uses the verified production domain https://ml.faizrahim.online', async () => {
+    const { SITE_DOMAIN } = await import('../../utils/seo')
+    expect(SITE_DOMAIN).toBe('https://ml.faizrahim.online')
+  })
+
   it('handles storage operations safely without throwing', () => {
     // Empty text should return null
     expect(saveText('   ')).toBeNull()

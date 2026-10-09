@@ -3,6 +3,8 @@
   "short_name": "MalConverter",
   "description": "Unicode, ML-TT, MLKV & FML Malayalam Font Converter and Manglish Typing utility.",
   "start_url": "/",
+  "scope": "/",
+  "id": "https://ml.faizrahim.online/",
   "display": "standalone",
   "background_color": "#0C0C0C",
   "theme_color": "#0C0C0C",

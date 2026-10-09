@@ -22,6 +22,8 @@ export const SEO_CONFIGS: Record<'font' | 'manglish' | '404', PageSeoConfig> = {
   },
 }
 
+export const SITE_DOMAIN = 'https://ml.faizrahim.online'
+
 export function updatePageSeo(pageKey: 'font' | 'manglish' | '404'): void {
   if (typeof document === 'undefined') return
 
@@ -63,10 +65,27 @@ export function updatePageSeo(pageKey: 'font' | 'manglish' | '404'): void {
   const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
   if (canonical && config.canonicalPath) {
     try {
-      const baseUrl = window.location.origin
+      const isLocal =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      const baseUrl = isLocal ? window.location.origin : SITE_DOMAIN
       canonical.href = `${baseUrl}${config.canonicalPath}`
     } catch {
-      // Safe fallback
+      canonical.href = `${SITE_DOMAIN}${config.canonicalPath}`
+    }
+  }
+
+  // Update og:url
+  const ogUrl = document.querySelector<HTMLMetaElement>('meta[property="og:url"]')
+  if (ogUrl && config.canonicalPath) {
+    try {
+      const isLocal =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      const baseUrl = isLocal ? window.location.origin : SITE_DOMAIN
+      ogUrl.content = `${baseUrl}${config.canonicalPath}`
+    } catch {
+      ogUrl.content = `${SITE_DOMAIN}${config.canonicalPath}`
     }
   }
 }

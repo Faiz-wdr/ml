@@ -4,4 +4,4 @@ Allow: /
 Allow: /font
 Allow: /manglish
 
-Sitemap: /sitemap.xml
+Sitemap: https://ml.faizrahim.online/sitemap.xml
