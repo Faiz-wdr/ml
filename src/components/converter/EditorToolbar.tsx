@@ -24,18 +24,22 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
     <div
       className={`flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5 sm:px-5 ${className}`}
     >
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-between sm:justify-start gap-2.5 w-full sm:w-auto">
         {label && (
-          <span className="text-xs font-semibold uppercase tracking-wider text-white/90">
+          <span className="text-xs font-semibold uppercase tracking-wider text-white/90 shrink-0">
             {label}
           </span>
         )}
-        {formatTag && (
-          <Badge variant="accent" size="xs">
-            {formatTag}
-          </Badge>
+        {(formatTag || leftContent) && (
+          <div className="flex items-center gap-2 ml-auto sm:ml-0 shrink-0">
+            {formatTag && (
+              <Badge variant="accent" size="xs">
+                {formatTag}
+              </Badge>
+            )}
+            {leftContent}
+          </div>
         )}
-        {leftContent}
       </div>
 
       {(rightActions || charCount !== undefined) && (

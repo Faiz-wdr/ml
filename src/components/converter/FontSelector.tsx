@@ -7,6 +7,7 @@ export interface FontSelectorProps {
   onSelectFormat: (formatId: string) => void
   className?: string
   direction?: 'up' | 'down' | 'auto'
+  align?: 'left' | 'right'
 }
 
 export const FontSelector: React.FC<FontSelectorProps> = ({
@@ -14,6 +15,7 @@ export const FontSelector: React.FC<FontSelectorProps> = ({
   onSelectFormat,
   className = '',
   direction = 'down',
+  align = 'right',
 }) => {
   const dropdownItems = TARGET_FONT_FORMATS.map((font) => ({
     id: font.id,
@@ -22,12 +24,11 @@ export const FontSelector: React.FC<FontSelectorProps> = ({
 
   return (
     <div className={`inline-flex items-center gap-2 ${className}`}>
-
       <Dropdown
         items={dropdownItems}
         selectedId={selectedFormatId}
         onSelect={onSelectFormat}
-        align="left"
+        align={align}
         direction={direction}
         variant="badge"
       />
