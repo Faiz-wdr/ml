@@ -5,6 +5,7 @@ import { PageContainer } from './PageContainer'
 import { Sidebar } from './Sidebar'
 import { X, CheckCircle2 } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { DotCanvasBackground } from '../ui/DotCanvasBackground'
 
 export interface AppShellProps {
   activeTab: NavTabId
@@ -21,11 +22,15 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] text-[#FDFDFD] flex flex-col md:flex-row relative selection:bg-[#A930BB]/30">
+      {/* Google Stitch Canvas dot grid background with lightweight hover animation */}
+      <DotCanvasBackground />
+
       {/* Mobile Header */}
       <MobileHeader
         activeTab={activeTab}
         onSelectTab={onSelectTab}
         onOpenSettings={() => setSettingsOpen(true)}
+        className="relative z-20"
       />
 
       {/* Desktop Floating Sidebar container */}
@@ -38,7 +43,7 @@ export const AppShell: React.FC<AppShellProps> = ({
       </div>
 
       {/* Main Content Workspace */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative z-10">
         <PageContainer>{children}</PageContainer>
       </div>
 
