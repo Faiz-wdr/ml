@@ -5,6 +5,7 @@ import { ManglishPage } from './pages/ManglishPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import type { NavTabId } from './types'
 import { updatePageSeo } from './utils/seo'
+import { Analytics } from '@vercel/analytics/react';
 
 export type CurrentRoute = 'font' | 'manglish' | '404'
 
