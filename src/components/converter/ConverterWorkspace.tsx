@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { TARGET_FONT_FORMATS } from '../../constants/fonts'
 import { convertLegacyToUnicode, convertUnicodeToLegacy } from '../../core'
+import { trackEvent } from '../../core/analytics/analytics'
 import { Tooltip } from '../ui/Tooltip'
 import { ConversionHeader } from './ConversionHeader'
 import { FontSelector } from './FontSelector'
@@ -71,6 +72,24 @@ export const ConverterWorkspace: React.FC = () => {
     )
   }
 
+  // Debounced converter_used tracking - fires only after successful conversion and pause in typing
+  useEffect(() => {
+    if (!targetText || !sourceText.trim()) return
+
+    const timer = setTimeout(() => {
+      trackEvent('converter_used', {
+        format: selectedFormat.name,
+        direction,
+      })
+    }, 1200)
+
+    return () => clearTimeout(timer)
+  }, [targetText, sourceText, selectedFormat.name, direction])
+
+  const handleCopySuccess = useCallback(() => {
+    trackEvent('conversion_copied')
+  }, [])
+
   const isSplit = viewMode === 'split'
   const isUnicodeSource = direction === 'unicode-to-legacy'
 
@@ -95,6 +114,7 @@ export const ConverterWorkspace: React.FC = () => {
       value={sourceText}
       onChange={setSourceText}
       onClear={() => setSourceText('')}
+      onCopy={handleCopySuccess}
       placeholder={
         isUnicodeSource
           ? 'Paste or type Malayalam Unicode text...'
@@ -117,6 +137,7 @@ export const ConverterWorkspace: React.FC = () => {
       value={targetText}
       readOnly={true}
       onClear={() => setSourceText('')}
+      onCopy={handleCopySuccess}
       placeholder="Converted text will appear here immediately..."
       fontFamily={isUnicodeSource ? 'mono' : 'malayalam'}
       minHeight={isSplit ? 'min-h-[220px] sm:min-h-[280px] lg:min-h-[380px]' : 'min-h-[140px] sm:min-h-[180px]'}

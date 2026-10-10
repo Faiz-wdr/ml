@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Check, Copy, Pencil, Trash2 } from 'lucide-react'
+import { trackEvent } from '../../core/analytics/analytics'
 import type { SavedText } from '../../core/storage/savedTexts'
 import { IconButton } from '../ui/IconButton'
 import { AlertDialog } from '../ui/AlertDialog'
@@ -24,6 +25,7 @@ export const SavedTextCard: React.FC<SavedTextCardProps> = ({
     try {
       await navigator.clipboard.writeText(item.text)
       setCopied(true)
+      trackEvent('manglish_text_copied')
       setTimeout(() => setCopied(false), 2000)
     } catch {
       setCopied(false)

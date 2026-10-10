@@ -60,13 +60,16 @@ export function App() {
   const activeTab: NavTabId = currentRoute === 'manglish' ? 'manglish' : 'font'
 
   return (
-    <AppShell activeTab={activeTab} onSelectTab={navigateTo}>
-      {currentRoute === 'font' && <FontConversionPage />}
-      {currentRoute === 'manglish' && (
-        <ManglishPage onBackToFont={() => navigateTo('font')} />
-      )}
-      {currentRoute === '404' && <NotFoundPage onNavigate={navigateTo} />}
-    </AppShell>
+    <>
+      <AppShell activeTab={activeTab} onSelectTab={navigateTo}>
+        {currentRoute === 'font' && <FontConversionPage />}
+        {currentRoute === 'manglish' && (
+          <ManglishPage onBackToFont={() => navigateTo('font')} />
+        )}
+        {currentRoute === '404' && <NotFoundPage onNavigate={navigateTo} />}
+      </AppShell>
+      <Analytics />
+    </>
   )
 }
 

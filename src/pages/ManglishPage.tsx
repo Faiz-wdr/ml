@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { ManglishEditor } from '../components/manglish/ManglishEditor'
 import { SavedTexts } from '../components/manglish/SavedTexts'
+import { trackEvent } from '../core/analytics/analytics'
 import {
   deleteSavedText,
   getSavedTexts,
@@ -19,9 +20,17 @@ export const ManglishPage: React.FC<ManglishPageProps> = () => {
   // Save or update an item in localStorage
   const handleSave = useCallback(
     (text: string) => {
-      saveText(text, editingItem?.id)
-      setSavedTexts(getSavedTexts())
-      setEditingItem(null)
+      const isEditing = Boolean(editingItem?.id)
+      const result = saveText(text, editingItem?.id)
+      if (result) {
+        if (isEditing) {
+          trackEvent('saved_text_edited')
+        } else {
+          trackEvent('saved_text_created')
+        }
+        setSavedTexts(getSavedTexts())
+        setEditingItem(null)
+      }
     },
     [editingItem]
   )
@@ -40,10 +49,13 @@ export const ManglishPage: React.FC<ManglishPageProps> = () => {
   // Delete an item from storage
   const handleDelete = useCallback(
     (id: string) => {
-      deleteSavedText(id)
-      setSavedTexts(getSavedTexts())
-      if (editingItem?.id === id) {
-        setEditingItem(null)
+      const success = deleteSavedText(id)
+      if (success) {
+        trackEvent('saved_text_deleted')
+        setSavedTexts(getSavedTexts())
+        if (editingItem?.id === id) {
+          setEditingItem(null)
+        }
       }
     },
     [editingItem]

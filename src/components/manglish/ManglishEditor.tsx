@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { trackEvent } from '../../core/analytics/analytics'
 import { fetchManglishSuggestions, getSuggestions } from '../../core/manglish/suggestions'
 import type { Suggestion } from '../../core/manglish/types'
 import type { SavedText } from '../../core/storage/savedTexts'
@@ -123,7 +124,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
 
   // Commit a suggestion replacing the active word
   const commitSuggestion = useCallback(
-    (suggestionText: string, appendSpace = true) => {
+    (suggestionText: string, appendSpace = true, isManualSelection = false) => {
       if (!activeWordRange || !textareaRef.current) return
 
       const { start, end } = activeWordRange
@@ -135,6 +136,14 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
 
       setText(updatedText)
       dismissSuggestions()
+
+      // Track completed word commit
+      trackEvent('manglish_used')
+
+      // Track explicit suggestion selection
+      if (isManualSelection) {
+        trackEvent('manglish_suggestion_selected')
+      }
 
       // Reposition cursor immediately after committed word
       const newCursorPos = start + replacement.length
@@ -172,7 +181,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
         e.preventDefault()
         const selected = suggestions[selectedIndex] || suggestions[0]
         if (selected) {
-          commitSuggestion(selected.text, true)
+          commitSuggestion(selected.text, true, true)
         }
         return
       }
@@ -182,7 +191,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
         e.preventDefault()
         const selected = suggestions[selectedIndex] || suggestions[0]
         if (selected) {
-          commitSuggestion(selected.text, false)
+          commitSuggestion(selected.text, false, true)
         }
         return
       }
@@ -202,6 +211,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
+      trackEvent('manglish_text_copied')
       setTimeout(() => setCopied(false), 2000)
     } catch {
       setCopied(false)
@@ -293,7 +303,7 @@ export const ManglishEditor: React.FC<ManglishEditorProps> = ({
             suggestions={suggestions}
             selectedIndex={selectedIndex}
             position={caretPosition}
-            onSelectSuggestion={(s) => commitSuggestion(s.text, true)}
+            onSelectSuggestion={(s) => commitSuggestion(s.text, true, true)}
           />
         )}
       </div>
