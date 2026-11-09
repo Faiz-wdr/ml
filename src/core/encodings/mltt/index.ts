@@ -153,8 +153,7 @@ export class MLTTEncoding implements EncodingProfile {
               nextIdx++
               break
             case 'ൌ':
-            case 'ൗ': // au
-              prebase = MLTT_MATRAS.E
+            case 'ൗ': // au (postbase only)
               postbase = MLTT_MATRAS.AU
               nextIdx++
               break

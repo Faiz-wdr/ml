@@ -19,4 +19,12 @@ describe('MLKV Conversion Engine', () => {
     expect(legacy).toBe('@')
     expect(convertLegacyToUnicode(legacy, 'apple-cards')).toBe('ണ്ട')
   })
+
+  it('converts സൗജന്യ in MLKV to kuP\\y and decodes back', () => {
+    const legacy = convertUnicodeToLegacy('സൗജന്യ', 'mlkv')
+    expect(legacy).toBe('kuP\\y')
+    expect(convertLegacyToUnicode(legacy, 'mlkv')).toBe('സൗജന്യ')
+    // Backward compatibility for legacy text containing 'skuP\y'
+    expect(convertLegacyToUnicode('skuP\\y', 'mlkv')).toBe('സൗജന്യ')
+  })
 })

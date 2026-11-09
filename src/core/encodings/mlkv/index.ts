@@ -137,8 +137,7 @@ export class MLKVEncoding implements EncodingProfile {
               nextIdx++
               break
             case 'ൌ':
-            case 'ൗ': // au
-              prebase = MLKV_MATRAS.E
+            case 'ൗ': // au (postbase only)
               postbase = MLKV_MATRAS.AU
               nextIdx++
               break

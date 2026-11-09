@@ -37,7 +37,7 @@ export const NDA_VOWEL_COMBINATIONS = [
   { unicode: 'ണ്ടൈ', desc: 'ai matra (prebase)' },
   { unicode: 'ണ്ടൊ', desc: 'o matra (split)' },
   { unicode: 'ണ്ടോ', desc: 'oo matra (split)' },
-  { unicode: 'ണ്ടൗ', desc: 'au matra (split)' },
+  { unicode: 'ണ്ടൗ', desc: 'au matra' },
 ]
 
 export const REAL_WORLD_NDA_WORDS = [

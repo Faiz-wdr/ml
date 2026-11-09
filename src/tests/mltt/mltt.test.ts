@@ -35,7 +35,7 @@ describe('ML-TT Conversion Engine', () => {
         'ണ്ടൈ': 'ssï',  // Prebase 'ss' before 'ï'
         'ണ്ടൊ': 'sïm',  // Split 's' before 'ï' and 'm' after
         'ണ്ടോ': 'tïm',  // Split 't' before 'ï' and 'm' after
-        'ണ്ടൗ': 'sïu',  // Split 's' before 'ï' and 'u' after
+        'ണ്ടൗ': 'ïu',   // 'ï' followed by 'u' (au matra is postbase only)
       }
 
       for (const item of NDA_VOWEL_COMBINATIONS) {
@@ -100,6 +100,14 @@ describe('ML-TT Conversion Engine', () => {
       const encoded = convertUnicodeToLegacy('കോ', 'ml-tt')
       expect(encoded).toBe('tIm')
       expect(convertLegacyToUnicode(encoded, 'ml-tt')).toBe('കോ')
+    })
+
+    it('correctly handles postbase au matra ൗ without prebase (സൗജന്യ -> kuP\\y)', () => {
+      const encoded = convertUnicodeToLegacy('സൗജന്യ', 'ml-tt')
+      expect(encoded).toBe('kuP\\y')
+      expect(convertLegacyToUnicode('kuP\\y', 'ml-tt')).toBe('സൗജന്യ')
+      // Backward compatibility for legacy text containing 'skuP\y'
+      expect(convertLegacyToUnicode('skuP\\y', 'ml-tt')).toBe('സൗജന്യ')
     })
 
     it('correctly converts മലയാളം to aebmfw', () => {

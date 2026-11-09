@@ -113,8 +113,7 @@ export class FMLEncoding implements EncodingProfile {
               nextIdx++
               break
             case 'ൌ':
-            case 'ൗ': // au
-              prebase = FML_MATRAS.E
+            case 'ൗ': // au (postbase only)
               postbase = FML_MATRAS.AU
               nextIdx++
               break
@@ -216,13 +215,18 @@ export class FMLEncoding implements EncodingProfile {
         if (match) {
           let afterBaseIdx = afterPrebaseIdx + match.length
 
-          // Check for right part of split signs ('n' for o/oo in FML)
+          // Check for right part of split signs ('n' for o/oo, 'v' for au in FML)
           if (afterBaseIdx < len && text[afterBaseIdx] === 'n') {
             if (prebaseMatra === 'െ') {
               prebaseMatra = 'ൊ'
               afterBaseIdx++
             } else if (prebaseMatra === 'േ') {
               prebaseMatra = 'ോ'
+              afterBaseIdx++
+            }
+          } else if (afterBaseIdx < len && text[afterBaseIdx] === 'v') {
+            if (prebaseMatra === 'െ') {
+              prebaseMatra = 'ൗ'
               afterBaseIdx++
             }
           }
